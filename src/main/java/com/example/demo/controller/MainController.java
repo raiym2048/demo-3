@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entites.User;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MainController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/hello")
     public String name(@RequestParam String name){
@@ -28,11 +30,7 @@ public class MainController {
     }
     @PostMapping("/register")
     public String register(@RequestParam String name){
-        User  user = new User();
-        user.setName(name);
-
-        userRepository.save(user);
-        return name+" registered!";
+       return userService.findAll(name);
     }
     @GetMapping("/login")
     public boolean login(@RequestParam String username, int password){
