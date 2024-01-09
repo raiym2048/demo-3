@@ -28,6 +28,11 @@ public class MainController {
         return userRepository.findAll();
     }
 
+
+
+
+    // DTO ----- request - response
+
     @GetMapping("/user/{id}")
     public UserResponse userResponse(@PathVariable Long id){
         return userService.getById(id);
@@ -36,6 +41,12 @@ public class MainController {
     public void register(@RequestBody UserRequest userRequest){
         userService.register(userRequest);
     }
+
+    //// -------------
+
+
+
+
     @GetMapping("/login")
     public boolean login(@RequestParam String username, int password){
         //
