@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.UserResponse;
 import com.example.demo.entites.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +25,11 @@ public class MainController {
     @GetMapping("/allUsers")
     List<User> users(){
         return userRepository.findAll();
+    }
+
+    @GetMapping("/user/{id}")
+    public UserResponse userResponse(@PathVariable Long id){
+        return userService.getById(id);
     }
     @PostMapping("/register")
     public String register(@RequestParam String name){
