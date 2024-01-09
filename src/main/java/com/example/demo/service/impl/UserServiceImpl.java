@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserResponse;
 import com.example.demo.entites.User;
 import com.example.demo.repositories.UserRepository;
@@ -37,5 +38,15 @@ public class UserServiceImpl implements UserService {
 
         }
         return null;
+    }
+
+    @Override
+    public void register(UserRequest userRequest) {
+        User user = new User();
+        user.setAge(userRequest.getAge());
+        user.setName(userRequest.getName());
+        user.setCourse(userRequest.getCourse());
+
+        userRepository.save(user);
     }
 }

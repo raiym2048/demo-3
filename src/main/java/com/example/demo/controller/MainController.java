@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserResponse;
 import com.example.demo.entites.User;
 import com.example.demo.repositories.UserRepository;
@@ -32,8 +33,8 @@ public class MainController {
         return userService.getById(id);
     }
     @PostMapping("/register")
-    public String register(@RequestParam String name){
-       return userService.findAll(name);
+    public void register(@RequestBody UserRequest userRequest){
+        userService.register(userRequest);
     }
     @GetMapping("/login")
     public boolean login(@RequestParam String username, int password){
