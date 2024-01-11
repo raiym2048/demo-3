@@ -1,13 +1,13 @@
-package com.example.demo.dto;
+package com.example.demo.dto.user;
+
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponse {
-    private Long id;
+public class UserRequest {
     private String name;
-    private String course;
     private Integer age;
+    private String course;
 }
