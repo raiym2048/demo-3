@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.product.ProductRequest;
 import com.example.demo.dto.product.ProductResponse;
 import com.example.demo.entites.Product;
+import com.example.demo.entites.User;
 import com.example.demo.enums.Type;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,9 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty())
             throw new NotFoundException("product with id: "+id+" not found!", HttpStatus.BAD_GATEWAY);
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setName(product.get().getName());
         return productMapper.toDto(product.get());
     }
 
@@ -40,6 +45,16 @@ public class ProductServiceImpl implements ProductService {
         if (!containsType(productRequest.getType()))
             throw new BadRequestException("no type with name: "+productRequest.getType()+"!");
         product.setType(Type.valueOf(productRequest.getType()));
+
+
+        User user = new User();
+        List<Product> products = new ArrayList<>();
+        if (user.getUserProducts()!=null){
+            products = user.getUserProducts();
+        }
+        products.add(product);
+        user.setUserProducts(products);
+
         productRepository.save(product);
     }
 

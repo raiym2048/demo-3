@@ -24,4 +24,7 @@ public class Product {
     private Type type;
     private Integer prize;
     private String description;
+
+    @ManyToOne()
+    User owner;
 }
