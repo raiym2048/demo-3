@@ -2,7 +2,7 @@ package com.example.demo.entites;
 
 
 import com.example.demo.enums.Role;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

@@ -2,7 +2,7 @@ package com.example.demo.entites;
 
 
 import com.example.demo.enums.Type;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

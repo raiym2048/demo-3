@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.config.JwtService;
 import com.example.demo.dto.user.UserAuthRequest;
 import com.example.demo.dto.user.UserAuthResponse;
 import com.example.demo.dto.user.UserRequest;
@@ -10,7 +11,6 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 
 import net.minidev.json.JSONObject;
@@ -23,8 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
-
+    private final JwtService jwtService;
 
     @Override
     public UserResponse getById(Long id, String token) {
@@ -93,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserRequest userRequest) {
-        User user  =new User();
+        User user  = new User();
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setRole(Role.STUDENT);
@@ -107,16 +105,27 @@ public class UserServiceImpl implements UserService {
                     userAuthRequest.getEmail(),
                     userAuthRequest.getPassword()
             ));
-
-        }catch (Exception e){
-            throw new BadRequestException("sefklhjn");
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid credentials");
         }
+
         Optional<User> user = userRepository.findByEmail(userAuthRequest.getEmail());
-        String token = tokenProvider.createToken(user.get().getEmail(), user.get().getRole());
+
+        Map<String, Object> extraClaims = new HashMap<>();
+        // You can add additional claims if needed
+
+        String token = jwtService.generateToken(extraClaims, user.get());
+
         UserAuthResponse authResponse = new UserAuthResponse();
         authResponse.setEmail(user.get().getEmail());
         authResponse.setToken(token);
 
         return authResponse;
     }
+
+    @Override
+    public List<UserResponse> getAll() {
+        return userMapper.toDtoS(userRepository.findAll());
+    }
+
 }

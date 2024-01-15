@@ -6,6 +6,8 @@ import com.example.demo.dto.user.UserRequest;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.entites.User;
 
+import java.util.List;
+
 public interface UserService {
 
     UserResponse getById(Long id, String t);
@@ -21,4 +23,6 @@ public interface UserService {
     void register(UserRequest userRequest);
 
     UserAuthResponse login(UserAuthRequest userAuthRequest);
+
+    List<UserResponse> getAll();
 }

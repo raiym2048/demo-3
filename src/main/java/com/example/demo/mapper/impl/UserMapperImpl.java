@@ -5,6 +5,8 @@ import com.example.demo.entites.User;
 import com.example.demo.mapper.UserMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -17,5 +19,14 @@ public class UserMapperImpl implements UserMapper {
         userResponse.setCourse(user.getCourse());
         userResponse.setName(user.getName());
         return userResponse;
+    }
+
+    @Override
+    public List<UserResponse> toDtoS(List<User> all) {
+        List<UserResponse> userResponses = new ArrayList<>();
+        for (User user: all){
+            userResponses.add(toDto(user));
+        }
+        return userResponses;
     }
 }
