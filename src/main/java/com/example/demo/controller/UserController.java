@@ -7,10 +7,12 @@ import com.example.demo.dto.user.UserRequest;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
@@ -23,6 +25,9 @@ public class UserController {
     public UserAuthResponse login(@RequestBody UserAuthRequest userAuthRequest){
         return userService.login(userAuthRequest);
     }
+
+
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @GetMapping("/{id}")
     public UserResponse getById(@PathVariable Long id, @RequestHeader("Authorization") String token){

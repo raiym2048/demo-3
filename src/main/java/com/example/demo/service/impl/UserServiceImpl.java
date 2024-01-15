@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getById(Long id, String token) {
+        User actionUser = getUsernameFromToken(token);
+        System.out.println(actionUser.getEmail());
 
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty())
