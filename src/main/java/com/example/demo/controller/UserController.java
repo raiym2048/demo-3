@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.user.UserAuthRequest;
+import com.example.demo.dto.user.UserAuthResponse;
 import com.example.demo.dto.user.UserRequest;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.UserService;
@@ -17,9 +19,14 @@ public class UserController {
         userService.register(userRequest);
     }
 
+    @PostMapping("/login")
+    public UserAuthResponse login(@RequestBody UserAuthRequest userAuthRequest){
+        return userService.login(userAuthRequest);
+    }
+
     @GetMapping("/{id}")
-    public UserResponse getById(@PathVariable Long id){
-        return userService.getById(id);
+    public UserResponse getById(@PathVariable Long id, @RequestHeader("Authorization") String token){
+        return userService.getById(id, token);
     }
 
     @PostMapping("/add")
