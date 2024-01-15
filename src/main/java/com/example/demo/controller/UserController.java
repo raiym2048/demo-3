@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    @PostMapping("/register")
+    public void register(@RequestBody UserRequest userRequest){
+        userService.register(userRequest);
+    }
 
     @GetMapping("/{id}")
     public UserResponse getById(@PathVariable Long id){

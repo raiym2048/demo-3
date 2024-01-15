@@ -12,4 +12,6 @@ public interface UserService {
     void deleteById(Long id);
 
     void updateById(Long id, UserRequest userRequest);
+
+    void register(UserRequest userRequest);
 }
