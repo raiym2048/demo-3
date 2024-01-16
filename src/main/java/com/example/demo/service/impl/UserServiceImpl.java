@@ -89,39 +89,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user.get());
     }
 
-    @Override
-    public void register(UserRequest userRequest) {
-        User user  = new User();
-        user.setEmail(userRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setRole(Role.STUDENT);
-        userRepository.save(user);
-    }
-
-    @Override
-    public UserAuthResponse login(UserAuthRequest userAuthRequest) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    userAuthRequest.getEmail(),
-                    userAuthRequest.getPassword()
-            ));
-        } catch (Exception e) {
-            throw new BadRequestException("Invalid credentials");
-        }
-
-        Optional<User> user = userRepository.findByEmail(userAuthRequest.getEmail());
-
-        Map<String, Object> extraClaims = new HashMap<>();
-        // You can add additional claims if needed
-
-        String token = jwtService.generateToken(extraClaims, user.get());
-
-        UserAuthResponse authResponse = new UserAuthResponse();
-        authResponse.setEmail(user.get().getEmail());
-        authResponse.setToken(token);
-
-        return authResponse;
-    }
 
     @Override
     public List<UserResponse> getAll() {

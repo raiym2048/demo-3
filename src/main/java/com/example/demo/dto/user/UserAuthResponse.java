@@ -8,4 +8,5 @@ import lombok.Setter;
 public class UserAuthResponse {
     private String email;
     private String token;
+    private String role;
 }

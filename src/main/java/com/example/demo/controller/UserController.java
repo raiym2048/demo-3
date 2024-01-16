@@ -19,27 +19,10 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-    @PostMapping("/register")
-    public void register(@RequestBody UserRequest userRequest){
-        userService.register(userRequest);
-    }
-
-    @PostMapping("/login")
-    public UserAuthResponse login(@RequestBody UserAuthRequest userAuthRequest){
-        return userService.login(userAuthRequest);
-    }
-
-
-   // @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @GetMapping("/{id}")
     public UserResponse getById(@PathVariable Long id, @RequestHeader("Authorization") String token){
         return userService.getById(id, token);
-    }
-
-    @PostMapping("/add")
-    public void addUser(@RequestBody UserRequest userRequest){
-        userService.addUser(userRequest);
     }
 
     @DeleteMapping("/{id}")

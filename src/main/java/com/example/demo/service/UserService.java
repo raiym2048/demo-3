@@ -20,9 +20,5 @@ public interface UserService {
 
     void updateById(Long id, UserRequest userRequest);
 
-    void register(UserRequest userRequest);
-
-    UserAuthResponse login(UserAuthRequest userAuthRequest);
-
     List<UserResponse> getAll();
 }
