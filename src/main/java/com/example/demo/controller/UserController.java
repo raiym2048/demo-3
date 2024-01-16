@@ -8,6 +8,7 @@ import com.example.demo.dto.user.UserResponse;
 import com.example.demo.entites.User;
 import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse getById(@PathVariable Long id, @RequestHeader("Authorization") String token){
         return userService.getById(id, token);
     }
@@ -34,15 +36,14 @@ public class UserController {
     public void updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest){
         userService.updateById(id, userRequest);
     }
-    @GetMapping("/gelAll")
-    public List<UserResponse> users(){
+
+    @GetMapping("/getAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> users() {
         return userService.getAll();
     }
-
-
-
-
 }
+
 
 
 

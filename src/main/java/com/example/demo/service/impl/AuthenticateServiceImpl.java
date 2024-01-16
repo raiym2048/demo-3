@@ -3,10 +3,12 @@ package com.example.demo.service.impl;
 import com.example.demo.config.JwtService;
 import com.example.demo.dto.user.UserAuthRequest;
 import com.example.demo.dto.user.UserAuthResponse;
+import com.example.demo.entites.Teacher;
 import com.example.demo.entites.User;
 import com.example.demo.enums.Role;
 import com.example.demo.exception.BadCredentialsException;
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.repositories.TeacherRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.service.AuthenticateService;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final TeacherRepository teacherRepository;
     @Override
     public void register(UserAuthRequest userAuthRequest) {
         if (userRepository.findByEmail(userAuthRequest.getEmail()).isPresent())
@@ -34,6 +37,26 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         user.setRole(Role.valueOf(userAuthRequest.getRole()));
         user.setEmail(userAuthRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userAuthRequest.getPassword()));
+
+
+        if (userAuthRequest.getRole().equals(Role.TEACHER)){
+
+            Teacher teacher = new Teacher();
+            teacher.setFirstname(user.getName());
+            teacherRepository.save(teacher);
+
+            user.setTeacher(teacher);
+            userRepository.save(user);
+
+        }
+
+        if (userAuthRequest.getRole().equals(Role.STUDENT)){
+
+
+        }
+
+
+
         userRepository.save(user);
     }
 
@@ -66,6 +89,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         Map<String, Object> extraClaims = new HashMap<>();
 
         String token = jwtService.generateToken(extraClaims, user);
+        System.out.println("Generated Token: " + token);
 
         userAuthResponse.setToken(token);
         return userAuthResponse;

@@ -32,16 +32,24 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<Product> userProducts;
+    private List<Product> userProducts;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Teacher teacher;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Student student;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == null) {
             return Collections.singletonList(new SimpleGrantedAuthority("ROLE_DEFAULT"));
         }
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
         return authorities;
     }
+
 
 
     @Override
