@@ -15,4 +15,6 @@ public interface ProductService {
     void deleteById(Long id);
 
     void updateById(Long id, ProductRequest productRequest);
+
+    void addToBucker(Long productId, String token);
 }

@@ -52,5 +52,9 @@ public class ProductController {
 
         return productMapper.toDtoS(user.get().getUserProducts());
     }
+    @PostMapping("/addToBucket/{productId}")
+    public void aVoid(@PathVariable Long productId, @RequestHeader("Authorization") String token){
+        productService.addToBucker(productId,token );
+    }
 
 }

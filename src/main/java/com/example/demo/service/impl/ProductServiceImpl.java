@@ -4,12 +4,15 @@ import com.example.demo.dto.product.ProductRequest;
 import com.example.demo.dto.product.ProductResponse;
 import com.example.demo.entites.Product;
 import com.example.demo.entites.User;
+import com.example.demo.enums.Role;
 import com.example.demo.enums.Type;
+import com.example.demo.exception.BadCredentialsException;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.ProductMapper;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.service.ProductService;
+import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+    private final UserService userService;
     @Override
     public ProductResponse getById(Long id) {
         Optional<Product> product = productRepository.findById(id);
@@ -82,6 +86,24 @@ public class ProductServiceImpl implements ProductService {
             throw new BadRequestException("no type with name: "+productRequest.getType()+"!");
         product.get().setType(Type.valueOf(productRequest.getType()));
         productRepository.save(product.get());
+    }
+
+    @Override
+    public void addToBucker(Long productId, String token) {
+        Optional<Product> product = productRepository.findById(productId);
+
+
+
+        User user = userService.getUsernameFromToken(token);
+        if (!user.getRole().equals(Role.STUDENT)){
+            throw new BadCredentialsException();
+        }
+        List<Product> products = new ArrayList<>();
+        if (!user.getUserProducts().isEmpty())
+            products = user.getUserProducts();
+        products.add(product.get());
+        user.setUserProducts(products);
+
     }
 
     private boolean containsType(String type) {

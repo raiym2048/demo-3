@@ -19,19 +19,17 @@ import org.springframework.security.web.context.request.async.WebAsyncManagerInt
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-@ComponentScan("com.example.demo.config")
-
 public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http.csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/product/**").permitAll()
-                        .requestMatchers("/user/getAll/**").hasRole("ADMIN")
+                        .requestMatchers("/auth/**", "/v3/api-docs/**",
+                                "/swagger-ui/**", "/swagger-ui.html", "/product/**",
+                                "/user/**").permitAll()
 
-                )                .httpBasic(withDefaults());
+                )               ;
         return http.build();
     }
 }
